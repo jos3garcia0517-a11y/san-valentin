@@ -1,50 +1,43 @@
+html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Carta de San Valentín</title>
+  <title>Sobre de San Valentín</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-    }
-    .carta {
-      width: 80%;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .arbol {
+    .sobre {
       position: relative;
       width: 300px;
-      height: 300px;
-      margin: 0 auto;
+      height: 200px;
+      margin: 100px auto;
+      perspective: 1000px;
     }
-    .corazon {
+    .carta {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #e74c3c;
-      transform: rotate(45deg);
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s;
     }
-    .corazon:before,
-    .corazon:after {
-      content: "";
+    .carta:hover {
+      transform: rotateX(180deg);
+    }
+    .frente {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #e74c3c;
-      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      backface-visibility: hidden;
     }
-    .corazon:before {
-      top: -10px;
-      left: 0;
-    }
-    .corazon:after {
-      top: 0;
-      left: -10px;
+    .atras {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      transform: rotateX(180deg);
+      backface-visibility: hidden;
+      padding: 20px;
     }
     .mensaje {
       font-size: 18px;
@@ -54,19 +47,13 @@
   </style>
 </head>
 <body>
-  <div class="carta">
-    <div class="arbol" id="arbol"></div>
-    <p class="mensaje">Feliz San Valentín, mi amor</p>
+  <div class="sobre">
+    <div class="carta">
+      <div class="frente"></div>
+      <div class="atras">
+        <p class="mensaje">Para el amor de mi vida.<br><br>Si pudiera elegir un lugar donde estar siempre sera a tu lado.<br><br>Entre mas tiempo estoy contigo mas te amo.<br><br>I love you</p>
+      </div>
+    </div>
   </div>
-  <script>
-    const arbol = document.getElementById('arbol');
-    for (let i = 0; i < 100; i++) {
-      const corazon = document.createElement('div');
-      corazon.className = 'corazon';
-      corazon.style.top = `${Math.random() * 300}px`;
-      corazon.style.left = `${Math.random() * 300}px`;
-      arbol.appendChild(corazon);
-    }
-  </script>
 </body>
 </html>
