@@ -3,171 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mi Amor ❤️</title>
+    <title>Un Regalo para Ti</title>
     <style>
-        :root {
-            --pink-bg: #fce4ec;
-            --heart-color: #ff4d6d;
-            --trunk-color: #5d4037;
-        }
-
         body {
-            background-color: var(--pink-bg);
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Arial', sans-serif;
+            background-color: #ffeef2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
         }
 
-        .card {
-            background: white;
-            width: 350px;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .container {
             text-align: center;
-        }
-
-        /* --- EL ÁRBOL SVG --- */
-        .tree-container {
             position: relative;
-            width: 200px;
+        }
+
+        /* El tronco del árbol */
+        .tree {
+            position: relative;
+            width: 20px;
             height: 250px;
+            background: #6d4c41;
             margin: 0 auto;
+            border-radius: 10px 10px 0 0;
         }
 
-        svg {
-            width: 100%;
-            height: 100%;
+        /* Ramas básicas */
+        .tree::before, .tree::after {
+            content: '';
+            position: absolute;
+            background: #6d4c41;
+            width: 15px;
+            height: 80px;
+            border-radius: 10px;
         }
 
-        /* Estilo de las líneas del árbol */
-        .tree-path {
-            fill: none;
-            stroke: var(--trunk-color);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawTree 4s ease-in-out forwards;
+        .tree::before {
+            transform: rotate(-45deg);
+            top: 50px;
+            left: -30px;
         }
 
-        @keyframes drawTree {
-            to { stroke-dashoffset: 0; }
+        .tree::after {
+            transform: rotate(45deg);
+            top: 80px;
+            right: -30px;
         }
 
-        /* --- CORAZONES ANIMADOS --- */
+        /* Contenedor de corazones (la copa del árbol) */
+        .hearts-container {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Estilo base del corazón */
         .heart {
             position: absolute;
-            color: var(--heart-color);
-            font-size: 14px;
-            opacity: 0;
-            transform: scale(0);
-            animation: bloom 0.5s ease-out forwards;
+            background-color: #ff4d6d;
+            width: 20px;
+            height: 20px;
+            transform: rotate(-45deg);
+            animation: float 3s infinite ease-in-out;
         }
 
-        @keyframes bloom {
-            to { opacity: 1; transform: scale(1); }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
         }
 
-        /* --- TEXTOS --- */
-        .content { margin-top: 15px; }
-        .intro { color: #888; font-size: 0.8rem; margin: 0; }
-        h2 { color: #333; font-size: 1rem; margin: 10px 0; font-weight: normal; }
-        
-        .timer-container {
-            background: #fff0f3;
-            padding: 10px;
-            border-radius: 12px;
-            margin: 15px 0;
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { left: 10px; top: 0; }
+
+        /* Animación de flotado */
+        @keyframes float {
+            0%, 100% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(1.1); }
         }
 
-        #timer {
+        .message {
+            margin-top: 40px;
+            color: #c9184a;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: var(--heart-color);
-            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
-
-        .footer { font-size: 0.7rem; color: #bbb; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="tree-container" id="container">
-            <svg viewBox="0 0 200 200">
-                <path class="tree-path" d="M100,200 C100,150 100,120 100,80" />
-                <path class="tree-path" d="M100,160 C80,150 60,140 50,120" />
-                <path class="tree-path" d="M100,160 C120,150 140,140 150,120" />
-                <path class="tree-path" d="M100,120 C85,110 70,100 65,80" />
-                <path class="tree-path" d="M100,120 C115,110 130,100 135,80" />
-                <path class="tree-path" d="M100,80 C95,70 105,60 100,40" />
-            </svg>
-        </div>
-
-        <div class="content">
-            <p class="intro">Para el amor de mi vida:</p>
-            <h2>"Si pudiera elegir un lugar seguro, sería a tu lado."</h2>
-            
-            <div class="timer-container">
-                <p style="margin:0; font-size: 0.7rem; color: #999;">Llevamos juntos:</p>
-                <div id="timer">Calculando...</div>
+    <div class="container">
+        <div class="hearts-container" id="hearts-garden">
             </div>
-            
-            <p class="footer">I LOVE YOU! _</p>
+        <div class="tree"></div>
+        <div class="message">
+            ¡Para alguien especial! <br>
+            <span style="font-size: 0.9rem; font-weight: normal;">(Espero que te guste este detalle)</span>
         </div>
     </div>
 
     <script>
-        // CONFIGURA TU FECHA AQUÍ
-        const startDate = new Date(2024, 1, 14, 0, 0, 0); 
+        const garden = document.getElementById('hearts-garden');
+        const heartCount = 40; // Puedes cambiar cuántos corazones quieres
 
-        // Contador de tiempo
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / 1000 / 60) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            document.getElementById('timer').innerHTML = ${d}d ${h}h ${m}m ${s}s;
+        for (let i = 0; i < heartCount; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Posiciones aleatorias dentro de la copa del árbol
+            const x = Math.random() * 250 - 125;
+            const y = Math.random() * 200 - 100;
+            const delay = Math.random() * 2;
+            const size = Math.random() * 0.8 + 0.5;
+
+            heart.style.left = calc(50% + ${x}px);
+            heart.style.top = calc(50% + ${y}px);
+            heart.style.animationDelay = ${delay}s;
+            heart.style.transform = rotate(-45deg) scale(${size});
+            
+            // Variedad de colores rosa/rojo
+            const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#c9184a'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.backgroundColor = randomColor;
+            heart.style.setProperty('--bg-color', randomColor); // Para los pseudo-elementos
+            
+            // Aplicar color a los círculos del corazón
+            heart.innerHTML = `<style>
+                .heart:nth-child(${i+1})::before, 
+                .heart:nth-child(${i+1})::after { 
+                    background-color: ${randomColor}; 
+                }
+            </style>`;
+
+            garden.appendChild(heart);
         }
-
-        // Generador de hojas (corazones)
-        function createHearts() {
-            const container = document.getElementById('container');
-            const positions = [
-                {x: 100, y: 40}, {x: 80, y: 60}, {x: 120, y: 60},
-                {x: 60, y: 80}, {x: 140, y: 80}, {x: 50, y: 110},
-                {x: 150, y: 110}, {x: 70, y: 130}, {x: 130, y: 130},
-                {x: 100, y: 70}, {x: 90, y: 100}, {x: 110, y: 100}
-            ];
-
-            // Crear muchos corazones aleatorios cerca de las ramas
-            for (let i = 0; i < 60; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart';
-                    heart.innerHTML = '❤';
-                    
-                    // Dispersión alrededor del centro del árbol
-                    const x = 100 + (Math.random() * 120 - 60);
-                    const y = 80 + (Math.random() * 100 - 50);
-                    
-                    heart.style.left = x + 'px';
-                    heart.style.top = y + 'px';
-                    heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
-                    
-                    container.appendChild(heart);
-                }, 2500 + (i * 50)); // Aparecen después de que las ramas se dibujan
-            }
-        }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
-        window.onload = createHearts;
     </script>
 </body>
 </html>
