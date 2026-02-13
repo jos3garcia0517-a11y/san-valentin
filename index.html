@@ -19,103 +19,101 @@
             min-height: 100vh;
             margin: 0;
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
         }
 
         .card {
             background: white;
-            width: 340px;
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 15px 45px rgba(233, 30, 99, 0.2);
+            width: 350px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            z-index: 10;
         }
 
-        /* --- ANIMACIÓN DEL ÁRBOL --- */
+        /* --- EL ÁRBOL SVG --- */
         .tree-container {
-            height: 220px;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            margin-bottom: 20px;
+            width: 200px;
+            height: 250px;
+            margin: 0 auto;
         }
 
-        .trunk {
-            width: 10px;
-            height: 120px;
-            background: var(--trunk-color);
-            border-radius: 10px 10px 0 0;
-            transform-origin: bottom;
-            animation: growTrunk 2s ease-out forwards;
+        svg {
+            width: 100%;
+            height: 100%;
         }
 
-        @keyframes growTrunk {
-            0% { transform: scaleY(0); }
-            100% { transform: scaleY(1); }
+        /* Estilo de las líneas del árbol */
+        .tree-path {
+            fill: none;
+            stroke: var(--trunk-color);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawTree 4s ease-in-out forwards;
         }
 
-        /* --- CORAZONES --- */
+        @keyframes drawTree {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* --- CORAZONES ANIMADOS --- */
         .heart {
             position: absolute;
             color: var(--heart-color);
-            font-size: 20px;
+            font-size: 14px;
             opacity: 0;
             transform: scale(0);
-            animation: popHeart 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: bloom 0.5s ease-out forwards;
         }
 
-        @keyframes popHeart {
-            0% { opacity: 0; transform: scale(0) translateY(0); }
-            100% { opacity: 1; transform: scale(1) translateY(-10px); }
+        @keyframes bloom {
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* --- TEXTOS Y CONTADOR --- */
-        .content h2 {
-            font-size: 1.1rem;
-            color: #444;
-            margin: 10px 0;
-            line-height: 1.5;
-        }
-
-        .counter-box {
+        /* --- TEXTOS --- */
+        .content { margin-top: 15px; }
+        .intro { color: #888; font-size: 0.8rem; margin: 0; }
+        h2 { color: #333; font-size: 1rem; margin: 10px 0; font-weight: normal; }
+        
+        .timer-container {
             background: #fff0f3;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 15px;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 15px 0;
         }
 
         #timer {
             font-weight: bold;
-            color: #d81b60;
+            color: var(--heart-color);
             font-size: 1.1rem;
-            margin-top: 8px;
-            display: block;
         }
 
-        .footer {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #aaa;
-            letter-spacing: 1px;
-        }
+        .footer { font-size: 0.7rem; color: #bbb; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="tree-container" id="tree">
-            <div class="trunk"></div>
+        <div class="tree-container" id="container">
+            <svg viewBox="0 0 200 200">
+                <path class="tree-path" d="M100,200 C100,150 100,120 100,80" />
+                <path class="tree-path" d="M100,160 C80,150 60,140 50,120" />
+                <path class="tree-path" d="M100,160 C120,150 140,140 150,120" />
+                <path class="tree-path" d="M100,120 C85,110 70,100 65,80" />
+                <path class="tree-path" d="M100,120 C115,110 130,100 135,80" />
+                <path class="tree-path" d="M100,80 C95,70 105,60 100,40" />
+            </svg>
         </div>
 
         <div class="content">
-            <p style="color: #888; font-size: 0.9rem; margin: 0;">Para el amor de mi vida:</p>
+            <p class="intro">Para el amor de mi vida:</p>
             <h2>"Si pudiera elegir un lugar seguro, sería a tu lado."</h2>
             
-            <div class="counter-box">
-                <span style="font-size: 0.8rem; color: #666;">Mi amor por ti comenzó hace...</span>
-                <div id="timer">Cargando tiempo...</div>
+            <div class="timer-container">
+                <p style="margin:0; font-size: 0.7rem; color: #999;">Llevamos juntos:</p>
+                <div id="timer">Calculando...</div>
             </div>
             
             <p class="footer">I LOVE YOU! _</p>
@@ -123,55 +121,53 @@
     </div>
 
     <script>
-        // 1. CONFIGURACIÓN DE FECHA (Año, Mes-1, Día, Hora, Min)
-        // Enero es 0, Febrero es 1, etc.
+        // CONFIGURA TU FECHA AQUÍ
         const startDate = new Date(2024, 1, 14, 0, 0, 0); 
 
-        // 2. LÓGICA DEL CONTADOR
+        // Contador de tiempo
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const mins = Math.floor((diff / 1000 / 60) % 60);
-            const secs = Math.floor((diff / 1000) % 60);
-
-            document.getElementById('timer').innerHTML = 
-                ${days}d ${hours}h ${mins}m ${secs}s;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('timer').innerHTML = ${d}d ${h}h ${m}m ${s}s;
         }
 
-        // 3. ANIMACIÓN DE CORAZONES (Brotes del árbol)
-        function createTreeHearts() {
-            const treeContainer = document.getElementById('tree');
-            const heartCount = 45; // Cuántos corazones quieres
+        // Generador de hojas (corazones)
+        function createHearts() {
+            const container = document.getElementById('container');
+            const positions = [
+                {x: 100, y: 40}, {x: 80, y: 60}, {x: 120, y: 60},
+                {x: 60, y: 80}, {x: 140, y: 80}, {x: 50, y: 110},
+                {x: 150, y: 110}, {x: 70, y: 130}, {x: 130, y: 130},
+                {x: 100, y: 70}, {x: 90, y: 100}, {x: 110, y: 100}
+            ];
 
-            for (let i = 0; i < heartCount; i++) {
+            // Crear muchos corazones aleatorios cerca de las ramas
+            for (let i = 0; i < 60; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.innerHTML = '❤';
                     heart.className = 'heart';
-
-                    // Posicionamiento aleatorio para formar la copa del árbol
-                    // El 50% es el centro (el tronco)
-                    const x = 50 + (Math.random() * 80 - 40); // Rango horizontal
-                    const y = 20 + (Math.random() * 60);      // Rango vertical (desde arriba)
-
-                    heart.style.left = x + '%';
-                    heart.style.top = y + '%';
+                    heart.innerHTML = '❤';
                     
-                    // Tamaño aleatorio para que se vea más natural
-                    const size = 12 + Math.random() * 15;
-                    heart.style.fontSize = size + 'px';
-
-                    treeContainer.appendChild(heart);
-                }, 2000 + (i * 100)); // Empiezan a salir después de que el tronco crece (2s)
+                    // Dispersión alrededor del centro del árbol
+                    const x = 100 + (Math.random() * 120 - 60);
+                    const y = 80 + (Math.random() * 100 - 50);
+                    
+                    heart.style.left = x + 'px';
+                    heart.style.top = y + 'px';
+                    heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                    
+                    container.appendChild(heart);
+                }, 2500 + (i * 50)); // Aparecen después de que las ramas se dibujan
             }
         }
 
         setInterval(updateTimer, 1000);
         updateTimer();
-        window.onload = createTreeHearts;
+        window.onload = createHearts;
     </script>
 </body>
 </html>
