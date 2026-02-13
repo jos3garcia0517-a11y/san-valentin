@@ -15,50 +15,58 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transform: scale(0);
-      animation: abrirCarta 2s forwards;
     }
-    .titulo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #e74c3c;
-      text-align: center;
-      opacity: 0;
-      animation: mostrarTitulo 1s 2s forwards;
+    .arbol {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+    .corazon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #e74c3c;
+      transform: rotate(45deg);
+    }
+    .corazon:before,
+    .corazon:after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #e74c3c;
+      border-radius: 50%;
+    }
+    .corazon:before {
+      top: -10px;
+      left: 0;
+    }
+    .corazon:after {
+      top: 0;
+      left: -10px;
     }
     .mensaje {
       font-size: 18px;
       color: #333;
-      text-align: justify;
-      opacity: 0;
-      animation: mostrarMensaje 1s 3s forwards;
-    }
-    @keyframes abrirCarta {
-      0% {
-        transform: scale(0);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-    @keyframes mostrarTitulo {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-    @keyframes mostrarMensaje {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="carta">
-    <h1 class="titulo">
+    <div class="arbol" id="arbol"></div>
+    <p class="mensaje">Feliz San Valentín, mi amor</p>
+  </div>
+  <script>
+    const arbol = document.getElementById('arbol');
+    for (let i = 0; i < 100; i++) {
+      const corazon = document.createElement('div');
+      corazon.className = 'corazon';
+      corazon.style.top = `${Math.random() * 300}px`;
+      corazon.style.left = `${Math.random() * 300}px`;
+      arbol.appendChild(corazon);
+    }
+  </script>
+</body>
+</html>
