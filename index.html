@@ -3,73 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una sorpresa para ti</title>
+    <title>Para Mi Valentía</title>
     <style>
         :root {
-            --color-sobre: #f06292;
-            --color-papel: #ffffff;
-            --color-fondo: #ffebee;
+            --pink: #ff4d6d;
+            --dark-pink: #c9184a;
+            --cream: #fff0f3;
         }
 
         body {
+            background-color: var(--cream);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: var(--color-fondo);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
         }
 
-        /* Contenedor principal */
-        .envelope-wrapper {
-            position: relative;
+        .container {
+            text-align: center;
             cursor: pointer;
         }
 
-        .envelope {
+        /* El Sobre */
+        .envelope-wrapper {
             position: relative;
             width: 300px;
             height: 200px;
-            background-color: var(--color-sobre);
+            background-color: var(--pink);
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
 
-        /* La solapa del sobre */
-        .envelope::before {
+        .envelope-wrapper:hover {
+            transform: translateY(-10px);
+        }
+
+        .envelope-wrapper::before {
             content: "";
             position: absolute;
             top: 0;
             z-index: 2;
-            border-top: 130px solid var(--color-sobre);
+            border-top: 130px solid var(--dark-pink);
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
             transform-origin: top;
-            transition: transform 0.4s ease-in-out;
+            transition: all 0.5s ease-in-out;
         }
 
-        /* El interior del sobre */
-        .envelope::after {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            width: 300px;
-            height: 200px;
-            background-color: #e91e63; /* Un tono más oscuro para profundidad */
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            clip-path: polygon(0 0, 150px 100px, 100% 0, 100% 100%, 0 100%);
-        }
-
-        /* La carta (papel) */
+        /* Carta oculta */
         .letter {
             position: absolute;
-            bottom: 10px;
-            left: 20px;
-            width: 260px;
+            bottom: 0;
+            left: 10px;
+            width: 280px;
             height: 180px;
-            background: var(--color-papel);
+            background: white;
             padding: 20px;
-            box-sizing: border
+            box-sizing: border-box;
+            transition: all 0.5s ease-in-out;
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .letter h2 {
+            color: var(--dark-pink);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .letter p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* Abrir el sobre */
+        .open .envelope-wrapper::before {
+            transform: rotateX(180px);
+            z-index: 0;
+        }
+
+        .open .letter {
+            transform: translateY(-150px);
+            height: 250px;
+            z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: var(--dark-pink);
+            z-index: 4;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: transform 0.5s;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--dark-pink);
+            border-radius: 50%;
+        }
+
+        .heart:before { left: -25px; }
+        .heart:after { top: -25px; }
+
+        .open .heart {
+            transform: translate(-50%, -150%) rotate(45deg) scale(0.5);
+            opacity: 0;
+        }
+
+        .instruction {
+            margin-top: 50px;
+            color: var(--dark-pink);
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="cardContainer">
+        <div class="envelope-wrapper">
+            <div class="letter">
+                <h2>¡Feliz San Valentín! ❤️</h2>
+                <p>Desde que llegaste a mi vida, cada día se siente como un 14 de febrero. Gracias por ser mi compañera, mi confidente y mi lugar seguro.</p>
+                <p><strong>Te amo con todo mi corazón.</strong></p>
+            </div>
+            <div class="heart"></div>
+        </div>
+        <p class="instruction">Haz click para abrir</p>
+    </div>
+
+    <script>
+        const container = document.getElementById('cardContainer');
+        
+        container.addEventListener('click', () => {
+            container.classList.toggle('open');
+            if(container.classList.contains('open')) {
+                createHearts();
+            }
+        });
+
+        function createHearts() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤️';
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.bottom = '0';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.animation = `float ${Math.random() * 2 + 3}s linear forwards`;
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 150);
+            }
+        }
+
+        // Estilo extra para la animación de JS
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes float {
+                to {
+                    transform: translateY(-100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
